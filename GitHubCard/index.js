@@ -1,8 +1,4 @@
-/* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-*/
-
+// Function for adding commponents from a username
 function addUserComponent(username) {
   axios.get(`https://api.github.com/users/${username}`).then(response => {
     let myGithubComponent = buildGithubComponent(response.data);
@@ -11,7 +7,56 @@ function addUserComponent(username) {
   });
 }
 
+// FAILED ATTEMPT TO CHAIN PROMISES. WAS WAY MORE COMPLEX
+// let cardsElement = document.querySelector('.cards');
+//
+// function addUserComponent(component) {
+//   cardsElement.appendChild(component);
+// }
+//
+// function getUserData(username) {
+//   return axios.get(`https://api.github.com/users/${username}`).then(response => {
+//     return response.data;
+//   });
+// }
+//
+// getUserData(bishibop).then(data => {
+//   let myGithubComponent = buildGithubComponent(data);
+//   addUserComponent(myGithubComponent)
+//   return response.data.login;
+// }).then(login => {
+//   // Gets my followers, gets each of their user info and then adds a component
+//   axios.get("https://api.github.com/users/bishibop/followers").then(response => {
+//     response.data.forEach(follower => {
+//       addUserComponent(follower.login);
+//     });
+//   });
+// });
+
+// Adds my component
 addUserComponent('bishibop');
+
+// Adds components for each of my friends
+const friendsArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+// friendsArray.forEach(follower => {
+//   addUserComponent(follower);
+// });
+
+// STRETCH: Gets my followers, gets each of their user info and then adds a component
+axios.get("https://api.github.com/users/bishibop/followers").then(response => {
+  response.data.forEach(follower => {
+    addUserComponent(follower.login);
+  });
+});
+
+
+
+
+/* Step 1: using axios, send a GET request to the following URL 
+           (replacing the palceholder with your Github name):
+           https://api.github.com/users/<your name>
+*/
+
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -36,11 +81,8 @@ addUserComponent('bishibop');
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
 
-followersArray.forEach(follower => {
-  addUserComponent(follower);
-});
+
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -92,7 +134,7 @@ function buildGithubComponent({
   locationElement.textContent = `Location: ${githubLocation}`;
 
   let profileElement = document.createElement('p');
-  profileElement.textContent = "Profile:&nbsp;";
+  profileElement.textContent = "Profile: ";
 
   let profileAnchorElement = document.createElement('a');
   profileAnchorElement.href = html_url;
@@ -102,7 +144,7 @@ function buildGithubComponent({
   followersElement.textContent = `Followers: ${followers}`;
 
   let followingElement = document.createElement('p');
-  followingElement.textContent = `Followeing: ${following}`;
+  followingElement.textContent = `Following: ${following}`;
 
   let bioElement = document.createElement('p');
   bioElement.textContent = `Bio: ${bio}`;
