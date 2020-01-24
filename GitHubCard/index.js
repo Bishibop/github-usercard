@@ -1,6 +1,6 @@
 // Function for adding commponents from a username
 function addUserComponent(username) {
-  axios.get(`https://api.github.com/users/${username}`).then(response => {
+  return axios.get(`https://api.github.com/users/${username}`).then(response => {
     let myGithubComponent = buildGithubComponent(response.data);
     let cardsElement = document.querySelector('.cards');
     cardsElement.appendChild(myGithubComponent);
@@ -34,7 +34,17 @@ function addUserComponent(username) {
 // });
 
 // Adds my component
-addUserComponent('bishibop');
+addUserComponent('bishibop').then(() => {
+  // Gitub calendar stretch
+  const calendarElement = document.createElement('div');
+  calendarElement.classList.add('calendar');
+  calendarElement.style.flexBasis = "100%";
+  calendarElement.style.marginTop = "20px";
+  cardElement = document.querySelectorAll('.card')[0];
+  cardElement.style.flexWrap = 'wrap';
+  cardElement.appendChild(calendarElement);
+  GitHubCalendar(".calendar", 'bishibop', { responsive: true });
+});
 
 // Adds components for each of my friends
 const friendsArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
@@ -48,6 +58,19 @@ axios.get("https://api.github.com/users/bishibop/followers").then(response => {
     addUserComponent(follower.login);
   });
 });
+
+
+// get user data function
+// build user componenet from data
+// add component
+// get followers function
+// for each of those: get user data, build user component, add component
+// getData(bishibop).then(data => {
+//   buildComponent(data)
+//   return component
+// }).then(component => {
+//   
+// })
 
 
 
@@ -168,3 +191,4 @@ function buildGithubComponent({
   luishrd
   bigknell
 */
+
